@@ -1,0 +1,50 @@
+{
+  "name": "chuyou-plan",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "test": "vitest run",
+    "check": "tsc -b --pretty false",
+    "dev:ui": "vite --host 127.0.0.1",
+    "start:api": "node server/app.js",
+    "test:server": "node --test tests/server/*.node.mjs",
+    "verify": "npm run check && npm test && npm run test:server && npm run build",
+    "verify:flyai": "node scripts/verify-flyai-runtime.mjs",
+    "start": "node scripts/local-service.mjs start",
+    "stop": "node scripts/local-service.mjs stop",
+    "status": "node scripts/local-service.mjs status"
+  },
+  "dependencies": {
+    "@fly-ai/flyai-cli": "1.0.16",
+    "@fontsource/manrope": "^5.2.8",
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "@pdf-lib/fontkit": "1.1.1",
+    "12306-mcp": "0.3.10",
+    "gsap": "^3.13.0",
+    "lucide-react": "^0.577.0",
+    "pdf-lib": "1.17.1",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "sharp": "^0.35.5"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^5.1.0",
+    "jsdom": "^30.1.3",
+    "prettier": "^3.9.10",
+    "typescript": "^5.9.3",
+    "vite": "^7.2.0",
+    "vitest": "^5.0.5"
+  },
+  "overrides": {
+    "mcp-http-server": {
+      "@modelcontextprotocol/sdk": "1.32.1"
+    }
+  }
+}

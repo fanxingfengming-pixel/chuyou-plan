@@ -1,0 +1,7 @@
+{
+  "file": "tokyo-hero.webp",
+  "origin": "OpenAI image_gen, built-in tool",
+  "type": "AI-generated illustrative mood image",
+  "prompt": "Cinematic Tokyo cityscape at blue hour, distant Mount Fuji silhouette, detailed city and warm lights in lower half, desaturated slate sky, clean dark negative space for typography, editorial photography, no text or logo.",
+  "fullPrompt": "assets/source/tokyo-hero-original.png.json"
+}

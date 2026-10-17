@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "provider": "FlyAI",
+  "hotelFilters": {
+    "priceRange": true,
+    "overallRating": true,
+    "minRenovationYear": true,
+    "userScore": true,
+    "selectedDistricts": true,
+    "brandPreference": true,
+    "starLevel": false,
+    "reviewCount": false,
+    "facilities": false
+  }
+}

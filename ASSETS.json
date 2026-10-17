@@ -1,0 +1,68 @@
+[
+  {
+    "file": "tokyo-hero.webp",
+    "origin": "OpenAI image_gen, built-in tool",
+    "type": "AI-generated illustrative mood image",
+    "prompt": "Cinematic Tokyo cityscape at blue hour, distant Mount Fuji silhouette, detailed city and warm lights in lower half, desaturated slate sky, clean dark negative space for typography, editorial photography, no text or logo.",
+    "fullPrompt": "assets/source/tokyo-hero-original.png.json"
+  },
+  {
+    "file": "hotel-kura.webp",
+    "origin": "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1400&q=85",
+    "type": "Unsplash theme photography, illustrative only; not a depiction of named mock hotel or attraction"
+  },
+  {
+    "file": "hotel-west.webp",
+    "origin": "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1400&q=85",
+    "type": "Unsplash theme photography, illustrative only; not a depiction of named mock hotel or attraction"
+  },
+  {
+    "file": "shinjuku.webp",
+    "origin": "https://images.unsplash.com/photo-1542051841857-5f90071e7989?auto=format&fit=crop&w=1400&q=85",
+    "type": "Unsplash theme photography, illustrative only; not a depiction of named mock hotel or attraction"
+  },
+  {
+    "file": "museum.webp",
+    "origin": "https://images.unsplash.com/photo-1564399579883-451a5d44ec08?auto=format&fit=crop&w=1400&q=85",
+    "type": "Unsplash theme photography, illustrative only; not a depiction of named mock hotel or attraction"
+  },
+  {
+    "file": "teamlab.webp",
+    "origin": "https://images.unsplash.com/photo-1535223289827-42f1e9919769?auto=format&fit=crop&w=1400&q=85",
+    "type": "Unsplash theme photography, illustrative only; not a depiction of named mock hotel or attraction"
+  },
+  {
+    "file": "hotel-aoyama.webp",
+    "origin": "https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=1400&q=85",
+    "type": "Unsplash theme photography, illustrative only; not a depiction of named mock hotel or attraction"
+  },
+  {
+    "file": "nezu.webp",
+    "origin": "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1400&q=85",
+    "type": "Unsplash theme photography, illustrative only; not a depiction of named mock hotel or attraction"
+  },
+  {
+    "file": "aoyama.webp",
+    "origin": "https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?auto=format&fit=crop&w=1400&q=85",
+    "type": "Unsplash theme photography, illustrative only; not a depiction of named mock hotel or attraction"
+  },
+  {
+    "file": "hotel-garden.webp",
+    "origin": "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=1400&q=85",
+    "type": "Unsplash theme photography, illustrative only; not a depiction of named mock hotel or attraction"
+  },
+  {
+    "file": "nihonbashi.webp",
+    "origin": "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=1400&q=85",
+    "type": "Unsplash theme photography, illustrative only; not a depiction of named mock hotel or attraction"
+  },
+  {
+    "type": "Generic landscape fallback, not a depiction of a named destination",
+    "author": "Dmytro Yarish / Unsplash",
+    "source": "https://images.unsplash.com/photo-1755147053209-3cf6b1199236?auto=format&fit=crop&w=1200&q=82",
+    "sourcePage": "https://unsplash.com/photos/misty-mountains-reflected-in-a-calm-lake-LyudO7gnERc",
+    "license": "https://unsplash.com/license",
+    "verifiedAt": "2026-10-16",
+    "file": "public/images/fallback-landscape.webp"
+  }
+]

@@ -1,0 +1,43 @@
+import {createRequire} from 'node:module';
+import fs from 'node:fs/promises';
+import assert from 'node:assert/strict';
+const require=createRequire('C:/Users/LEGION/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/');
+const {chromium}=require('playwright');
+const fixture=JSON.parse(await fs.readFile('artifacts/v21/live-fixture.json','utf8')),candidateData=JSON.parse(await fs.readFile('artifacts/v21/live-hotel-candidates.json','utf8'));
+const base='http://127.0.0.1:5173';const reports=[];await fs.mkdir('artifacts/v21/browser',{recursive:true});
+function draft(mode='hotel'){
+ const hotels=candidateData.hotels.filter(h=>h.id!==fixture.hotel.id);hotels.push(fixture.hotel);
+ return {version:2,parsedPrompt:'',rawPrompt:'长沙到杭州，慢慢游玩',parseSource:'live',originCity:'长沙',destinationCity:'杭州',dateMode:'exact',departureDate:'2026-10-20',returnDate:'2026-10-21',fuzzyDateText:'',tripDays:2,adults:2,children:0,planningMode:mode,selectedPlaces:mode==='area'?[fixture.places[0]]:[],primaryPlace:mode==='area'?fixture.places[0]:null,recommendedDistricts:[],brandPreference:[],intercityTransportPreference:'均衡',selectedTransportMode:'rail',transportOptions:[],hotelFilters:{priceRange:[0,2000],minRenovationYear:0,overallRating:0,subwayDistance:999999,selectedDistricts:[],starLevel:0,reviewCount:0,userScore:0,facilities:[]},hotelSearchStatus:'success',hotelSearchError:'',hotelResults:hotels,hotelCandidateIds:hotels.slice(0,6).map(h=>h.id),compareHotelIds:[],selectedHotel:null,tripPlaces:fixture.places,corePlaceDecisions:{},packingItems:[],suppressedPackingIds:[],localTransportPreference:'公共交通',routeDraft:null,memoCompletedAt:'',lastUpdatedAt:new Date().toISOString(),lastRoute:'/plan/results'};
+}
+async function noOverflow(page){assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'horizontal overflow');}
+async function save(page,name){for(const img of await page.locator('.hotel-highlights img').all()){if(await img.isVisible()){await img.scrollIntoViewIfNeeded();await img.evaluate(async img=>{try{await img.decode();}catch{}});}}await noOverflow(page);await page.evaluate(()=>{document.activeElement?.blur();window.scrollTo(0,0);});await page.screenshot({path:'artifacts/v21/browser/'+name+'.png',fullPage:true});}
+async function state(page){return page.evaluate(()=>JSON.parse(localStorage.getItem('tripDraft')));}
+const browser=await chromium.launch({channel:'msedge',headless:true});
+try{
+ for(const width of [1440,390]){
+ const context=await browser.newContext({viewport:{width,height:width===1440?1000:844},reducedMotion:'reduce',acceptDownloads:true}),page=await context.newPage(),errors=[];page.setDefaultTimeout(20000);page.on('pageerror',e=>errors.push(e.message));
+ const mode=width===1440?'hotel':'area',d=draft(mode);await page.goto(base+'/');await page.evaluate(d=>localStorage.setItem('tripDraft',JSON.stringify(d)),d);await page.goto(base+'/plan/results');
+ const cards=page.locator('.wizard-content > .hotel-highlights > .hotel-result');await cards.first().waitFor();assert.equal(await cards.count(),6);assert.equal(await page.getByRole('button',{name:/查看地图|收起地图/}).count(),0);
+ const columns=await page.locator('.wizard-content > .hotel-highlights').evaluate(e=>getComputedStyle(e).gridTemplateColumns.split(' ').length);assert.equal(columns,width===1440?3:1);
+ await cards.nth(0).getByRole('button',{name:'我已选择这家酒店',exact:true}).click();assert.equal(await cards.nth(0).getAttribute('class').then(s=>s.includes('is-selected')),true);assert.match(await page.locator('.feedback-toast').innerText(),/已选择/);
+ const old=await state(page);await page.getByRole('textbox',{name:'搜索飞猪酒店',exact:true}).fill('杭州友好饭店');await page.getByRole('button',{name:'搜索飞猪酒店',exact:true}).click();
+ await page.locator('.named-hotel-results .hotel-result').first().waitFor({timeout:90000});assert.equal((await state(page)).selectedHotel.id,old.selectedHotel.id);assert.deepEqual((await state(page)).hotelCandidateIds,old.hotelCandidateIds);
+ await page.locator('.named-hotel-results').getByRole('button',{name:'加入候选',exact:true}).first().click();await page.getByRole('button',{name:'取消替换',exact:true}).click();assert.deepEqual((await state(page)).hotelCandidateIds,old.hotelCandidateIds);
+ await page.locator('.named-hotel-results').getByRole('button',{name:'加入候选',exact:true}).first().click();await page.locator('.replacement-options button').nth(3).click();let current=await state(page);assert.equal(current.hotelCandidateIds[3],fixture.hotel.id);assert.equal(current.selectedHotel.id,old.selectedHotel.id);
+ await page.reload();assert.equal((await state(page)).hotelCandidateIds[3],fixture.hotel.id);
+ await cards.nth(3).getByRole('button',{name:'我已选择这家酒店',exact:true}).click();await save(page,width+'-hotels');
+ await page.getByRole('button',{name:'接着选择景点',exact:true}).click();await page.getByRole('button',{name:'选择市内交通',exact:true}).click();await page.getByRole('button',{name:'安排行程路线',exact:true}).click();
+ await page.getByRole('button',{name:'开始规划路线',exact:true}).click();await page.getByRole('button',{name:'确认开始规划',exact:true}).click();await page.getByRole('button',{name:'完成规划',exact:true}).waitFor();await page.waitForFunction(()=>JSON.parse(localStorage.getItem('tripDraft')).routeDraft?.status==='ready',{},{timeout:180000});
+ current=await state(page);assert.ok(current.routeDraft.days.every(day=>!day.stops.some(s=>s.kind==='place')||day.legs.at(-1).to.id===current.routeDraft.hotelAnchor.id));assert.equal(await page.locator('.route-edit').count(),0);assert.equal(await page.getByRole('button',{name:'生成 PDF',exact:true}).count(),0);assert.equal(await page.locator('.travel-route-map svg polyline').count()>0,true);
+ await page.locator('[data-route-day="1"]').getByRole('button',{name:'编辑路线',exact:true}).click();const before=current.routeDraft.days[0].stops.filter(s=>s.kind==='place').map(s=>s.placeId);
+ await page.getByRole('button',{name:'下移'+fixture.places[0].name,exact:true}).click();await page.waitForFunction(()=>JSON.parse(localStorage.getItem('tripDraft')).routeDraft?.status==='ready',{},{timeout:180000});current=await state(page);assert.deepEqual(current.routeDraft.days[0].stops.filter(s=>s.kind==='place').map(s=>s.placeId),[...before].reverse());
+ await page.locator('[data-route-day="1"]').getByRole('button',{name:'收起编辑',exact:true}).click();await save(page,width+'-route');
+ await page.getByRole('textbox',{name:'新增物品',exact:true}).fill('相机');await page.getByRole('button',{name:'添加物品',exact:true}).click();await page.getByRole('textbox',{name:'相机备注',exact:true}).fill('备两张卡');
+ await page.getByRole('button',{name:'完成规划',exact:true}).click();await page.waitForURL('**/plan/memo');await page.locator('.travel-memo').waitFor();assert.equal(await page.getByRole('button',{name:'返回编辑',exact:true}).count(),1);assert.equal(await page.getByRole('button',{name:'生成 PDF',exact:true}).count(),1);
+ const day2=await page.locator('.memo-day').nth(1).locator('li b').first().innerText();assert.equal(day2,'3');
+ await page.getByRole('button',{name:'完成 ✓',exact:true}).click();await page.reload();assert.ok((await state(page)).memoCompletedAt);await save(page,width+'-memo');
+ for(let i=0;i<2;i++){const download=page.waitForEvent('download');await page.getByRole('button',{name:'生成 PDF',exact:true}).click();const file=await download;await file.saveAs('artifacts/v21/browser/'+width+'-memo-'+i+'.pdf');await page.getByText(/PDF 已生成并发起下载/).waitFor();}
+ await page.getByRole('button',{name:'返回编辑',exact:true}).click();await page.waitForURL('**/plan/route');assert.ok((await state(page)).memoCompletedAt);await page.locator('[data-route-day="1"]').getByRole('button',{name:'编辑路线',exact:true}).click();const first=(await state(page)).routeDraft.days[0].stops.find(s=>s.kind==='place');await page.getByRole('combobox',{name:'移动'+first.name+'到',exact:true}).selectOption('2');await page.waitForFunction(()=>JSON.parse(localStorage.getItem('tripDraft')).routeDraft?.status==='ready',{},{timeout:180000});assert.equal((await state(page)).memoCompletedAt,'');await page.reload();assert.equal((await state(page)).routeDraft.days[1].stops.filter(s=>s.kind==='place').length,2);
+ await noOverflow(page);assert.deepEqual(errors,[]);reports.push({width,mode,source:'real FlyAI and Amap through local API',sixCandidates:true,replacementCancelAndRestore:true,selectionFeedback:true,realReturnRoutes:true,editAutoRecalculation:true,globalNumbers:true,memoAndRepeatedPdfDownload:true,completionInvalidation:true,errors,passed:true});console.log(JSON.stringify(reports.at(-1)));await context.close();
+ }
+}finally{await fs.writeFile('artifacts/v21/browser/report.json',JSON.stringify(reports,null,2));await browser.close();}

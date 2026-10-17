@@ -1,0 +1,8 @@
+{
+  "tool": "OpenAI built-in image_gen",
+  "created": "2026-10-16",
+  "type": "AI-generated illustrative travel mood image",
+  "prompt": "Use case: photorealistic-natural. Create a single cinematic ultra-wide 16:9 atmospheric travel photograph for a premium AI Travel Concierge website hero. A sweeping Tokyo cityscape seen from a high observation deck at blue hour, distant Mount Fuji a subtle silhouette on the horizon, dense detailed city buildings and amber lights in lower half, expansive moody slate-blue twilight sky in upper half. Rich yet restrained charcoal and desaturated blue tones, subtle warm window lights, delicate haze, real architectural detail, analog editorial photography, high dynamic range without oversaturation. Composition supports oversized white sans-serif type over the left and upper center, so maintain clean darker negative space there, sweeping city on bottom and right. Sophisticated Japanese travel magazine art direction, quiet cinematic grandeur. No text, no logos, no UI, no frames, no watermarks, no purple, no neon, no science-fiction buildings. This is an illustrative AI mood image, not documentation of a real view.",
+  "derivative": "public/images/tokyo-hero.webp",
+  "processing": "WebP 1920x1080, quality 88; original retained here"
+}
