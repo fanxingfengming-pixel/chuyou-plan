@@ -48,6 +48,22 @@
 
 ## 效果展示
 
+**项目演示视频**
+
+[观看 / 下载演示视频（约 3 分 53 秒）](https://github.com/fanxingfengming-pixel/chuyou-plan/raw/refs/heads/main/docs/media/demo.mp4)
+
+视频展示旅行信息填写、住宿筛选、景点选择、逐日路线及旅行备忘录的操作流程。
+
+**百炼 Managed Agent 会话记录**
+
+![百炼 Managed Agent 会话列表](https://raw.githubusercontent.com/fanxingfengming-pixel/chuyou-plan/main/docs/screenshots/bailian-sessions.png)
+
+**百炼结构化任务与交通比较结果**
+
+![百炼结构化任务输入与交通比较摘要](https://raw.githubusercontent.com/fanxingfengming-pixel/chuyou-plan/main/docs/screenshots/bailian-transport-summary.png)
+
+截图展示服务端提交的结构化任务和 Agent 返回的交通比较摘要；其中时长与价格对应当时的查询输入。
+
 **酒店候选与独立名称搜索**
 
 ![酒店候选与独立名称搜索](https://raw.githubusercontent.com/fanxingfengming-pixel/chuyou-plan/main/docs/screenshots/hotels.png)
@@ -69,14 +85,5 @@
 **真实服务复现：** 安装项目依赖，按仓库 `.env.example` 在本地配置自己的百炼 Workspace、Agent、Environment，以及高德和 FlyAI 服务，再构建并启动。云端 Agent 和服务凭据需自行配置，仓库不包含密钥。
 
 酒店确认属于行程规划选择，实际房型、人数适用性、库存和最终金额需在飞猪核对；订单与支付由供应方平台完成。
-
-## 踩坑记录（可选）
-
-- **请求受理不等于任务完成：** Managed Agent 需要先订阅 SSE，再提交任务，并等待完成状态。
-- **模型输出需要校验：** JSON 格式和酒店推荐 ID 都要检查，避免无效结果进入页面。
-- **旅行数据存在缺口：** 未返回的酒店字段保留待核实，数据不足的筛选明确说明支持情况。
-- **异步查询需要隔离：** 旧响应不能覆盖用户的新选择，失败时保留草稿，方便重试。
-- **路线编辑需要重新计算：** 调整景点后让旧路段失效，再按用户保留的顺序查询。
-- **PDF 需要单独验证：** 中文字体、地图比例、长内容和分页都需要检查。
 
 > **奖品说明：**每个团队最多发放 1 份奖品。同一团队即使提交多个参赛作品，也只登记 1 位奖品领取人；其他团队成员可以共同署名，但不重复发放奖品。
