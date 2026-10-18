@@ -4,7 +4,7 @@
 >
 > [公开仓库体验与复现](docs/PUBLIC_GUIDE.md) · [参赛介绍](docs/COMPETITION.md)
 >
-> 当前仅本地体验，尚未部署公开在线 Demo；下方 127.0.0.1 是本机入口。公开仓库不包含私密配置、本地数据库和内部历史资料。
+> [在线交互 Demo](https://chuyou-plan-demo.fengmingfanxing.chatgpt.site) 使用模拟数据，不调用实时服务；下方 127.0.0.1 是本机真实服务入口。公开仓库不包含私密配置、本地数据库和内部历史资料。
 # 出游plan · 旅行规划产品 V2
 
 项目：D:/aaa飞猪。保留中文品牌、Hero结构与GSAP开场，采用A「奶油旅行手账」暖色视觉；通过独立 URL 完成旅行规划，共享本地 tripDraft。

@@ -49,7 +49,7 @@
 ## 项目链接与复现方式
 
 - GitHub 仓库：https://github.com/fanxingfengming-pixel/chuyou-plan
-- 在线 Demo：暂未部署，当前仅本地体验。
+- 在线 Demo：[https://chuyou-plan-demo.fengmingfanxing.chatgpt.site](https://chuyou-plan-demo.fengmingfanxing.chatgpt.site)（交互演示版，使用模拟数据，不调用百炼、FlyAI 或高德实时服务）。
 - 复现指南：https://github.com/fanxingfengming-pixel/chuyou-plan/blob/main/docs/PUBLIC_GUIDE.md
 
 安装依赖，按 `.env.example` 在本地配置自己的百炼、高德和 FlyAI 服务，填写前端公开配置，构建并启动后在本机浏览器体验。也可显式启用模拟模式体验界面；模拟数据不作为真实服务调用证据。

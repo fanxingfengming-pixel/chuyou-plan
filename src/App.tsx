@@ -1,3 +1,4 @@
+import { DemoBanner } from "./planning/components/DemoBanner";
 import { isRouteReady } from "./planning/routeEngine";
 import { TravelMemo } from "./planning/components/TravelMemo";
 import { FeedbackToast } from "./planning/components/Common";
@@ -250,6 +251,7 @@ function Experience() {
       <a href="#main" className="skip-link">
         跳至主要内容
       </a>
+      <DemoBanner />
       <Navbar />
       <FeedbackToast />
       {path === "/" ? (

@@ -13,7 +13,7 @@ export function TravelMemo() {
   if (!route || !isRouteReady(draft))
     return (
       <Message>
-        请先完成高德路线核实。
+        请先完成路线计算。
         <button className="text-button" onClick={() => navigate("/plan/route")}>
           返回路线
         </button>
@@ -64,7 +64,7 @@ export function TravelMemo() {
         <p className="quiet-copy">
           {draft.memoCompletedAt
             ? "规划已完成 · 本机保存"
-            : "路线已核实 · 每天最后返回酒店"}{" "}
+            : route.hotelAnchor?.source === "mock" ? "模拟路线 · 不可用于实际出行" : "路线已核实 · 每天最后返回酒店"}{" "}
           · 路线查询于{" "}
           {new Date(route.generatedAt).toLocaleString("zh-CN", {
             timeZone: "Asia/Shanghai",

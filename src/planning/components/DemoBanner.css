@@ -1,0 +1,27 @@
+.public-demo-banner {
+  position: sticky;
+  top: 0;
+  z-index: 41;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 14px;
+  padding: 9px max(20px, calc((100vw - 1328px) / 2));
+  color: #593624;
+  background: #f4e3ca;
+  border-bottom: 1px solid #d8b992;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.public-demo-banner strong { color: #8c3e2c; white-space: nowrap; }
+.public-demo-banner small { flex-basis: 100%; font-size: 12px; }
+body:has(.public-demo-banner) .navbar { top: 70px; }
+body:has(.public-demo-banner) .planning-page { padding-top: 150px; }
+body:has(.public-demo-banner) .hero-content { padding-top: 145px; }
+@media (max-width: 650px) {
+  .public-demo-banner { gap: 2px 8px; font-size: 12px; }
+  .public-demo-banner small { font-size: 11px; }
+  body:has(.public-demo-banner) .navbar { top: 90px; }
+  body:has(.public-demo-banner) .planning-page { padding-top: 160px; }
+  body:has(.public-demo-banner) .hero-content { padding-top: 170px; }
+}

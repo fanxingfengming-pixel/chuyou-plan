@@ -1,6 +1,6 @@
 import { PackingList } from "./PackingList";
 import { ensureCorePlace } from "../model";
-import { calculateRealRoute } from "../services";
+import { calculateRealRoute, isLiveMode } from "../services";
 import { serviceErrorMessage } from "../serviceClient";
 import { useEffect, useRef, useState, type PointerEvent } from "react";
 import {
@@ -399,7 +399,7 @@ export function RoutePlanner() {
         </p>
       </div>
       <p className="quiet-copy">
-        只安排大概时段。每段距离、交通方式与预计耗时由高德实际查询，出发前请核对运营状况；驾车耗时不含叫车等待。
+        {isLiveMode ? "只安排大概时段。每段距离、交通方式与预计耗时由高德实际查询，出发前请核对运营状况；驾车耗时不含叫车等待。" : "模拟路线仅展示逐日安排、编辑与备忘录流程；距离、耗时和交通方式均为演示数据，不可用于实际出行。"}
       </p>
       {!route ? (
         <div className="route-start">
@@ -425,7 +425,7 @@ export function RoutePlanner() {
           {route.status === "loading" && (
             <QueryProgress
               operation="amap/route"
-              label="正在获取高德实际路线"
+              label={isLiveMode ? "正在获取高德实际路线" : "正在生成模拟路线"}
             />
           )}
           {route.status === "needs-hotel" && (
@@ -470,7 +470,7 @@ export function RoutePlanner() {
           )}
           {route.status === "idle" && (
             <Message>
-              路线需要重新通过高德核实。
+              {isLiveMode ? "路线需要重新通过高德核实。" : "请重新计算模拟路线。"}
               <button className="text-button" onClick={retry}>
                 重新核实
               </button>
@@ -550,7 +550,7 @@ export function RoutePlanner() {
                               {leg
                                 ? legLabel(leg)
                                 : route.status === "loading"
-                                  ? "正在获取实际路线…"
+                                  ? (isLiveMode ? "正在获取实际路线…" : "正在计算模拟路段…")
                                   : "路段待核实"}
                               {leg?.mode === "transit" &&
                                 leg.instructions.length > 0 && (
@@ -695,7 +695,7 @@ export function RoutePlanner() {
               <h2>把这趟旅行，收进一页备忘录。</h2>
               <p>
                 {ready
-                  ? "路线已核实，可以完成规划。"
+                  ? (isLiveMode ? "路线已核实，可以完成规划。" : "模拟路线已生成，可以完成演示。")
                   : "请等待路线核实完成；查询失败可重试。"}
               </p>
             </div>
@@ -721,7 +721,7 @@ export function RoutePlanner() {
           已选择 {draft.tripPlaces.length} 个地点，是否开始规划？
         </h2>
         <p>
-          按大概时段安排每天酒店往返，并查询高德真实路线。重新生成将覆盖当前分天和顺序。
+          {isLiveMode ? "按大概时段安排每天酒店往返，并查询高德真实路线。重新生成将覆盖当前分天和顺序。" : "按大概时段演示每天酒店往返，不调用实时地图。重新生成将覆盖当前分天和顺序。"}
         </p>
         <div className="inline-actions">
           <button
